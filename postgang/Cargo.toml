@@ -1,0 +1,25 @@
+[package]
+name = "postgang"
+license = "MIT OR Apache-2.0"
+description = "Create iCalendar for norwegian postcode delivery days"
+categories = ["command-line-utilities"]
+authors = ["Trond Aasan"]
+repository = "https://github.com/taasan/postgang-rust/"
+version = "0.1.0"
+edition = "2024"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+calendar = { path = "../calendar" }
+ureq = { workspace = true }
+chrono = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+clap = { workspace = true }
+uuid = { workspace = true }
+url = { workspace = true }
+tracing = { workspace = true }
+
+[lints]
+workspace = true

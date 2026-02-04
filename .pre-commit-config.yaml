@@ -1,0 +1,41 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+    -   id: check-shebang-scripts-are-executable
+    -   id: check-merge-conflict
+    -   id: detect-private-key
+    -   id: forbid-submodules
+-   repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+    -   id: fmt
+    -   id: cargo-check
+    -   id: clippy
+-   repo: local
+    hooks:
+    -   id: update-garbage-readme
+        name: generate garbage/README.md
+        language: system
+        always_run: true
+        entry: bash -c 'cd garbage && ./make-readme'
+    -   id: update-postgang-readme
+        name: generate postgang/README.md
+        language: system
+        always_run: true
+        entry: bash -c 'cd postgang && ./make-readme'
+
+- repo: https://github.com/jumanjihouse/pre-commit-hooks
+  rev: 3.0.0
+  hooks:
+      - id: script-must-not-have-extension
+      - id: shellcheck
+      - id: shfmt
+        args:
+            - --indent 4

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+exec >README.md
+
+cat <<'EOF'
+# Innherred Renovasjon pickup dates calendar
+
+A command line interface for generating an iCal version of IR garbage
+pickup days or from a JSON file.
+
+## Help
+
+```
+EOF
+
+cargo run -q -- help
+
+cat <<'EOF'
+```
+
+## Api
+
+```
+EOF
+
+cargo run -q -- help api
+
+cat <<'EOF'
+```
+
+## File
+
+```
+EOF
+
+cargo run -q -- help file
+
+cat <<'EOF'
+```
+
+## Example output
+
+```ical
+EOF
+
+echo '{"1111":{"fraction_id":"1111","fraction_name":"Matavfall","frequency":2,"frequency_human":"hver 2. uke","dates":["2026-02-10T00:00:00"]},"4":{"fraction_id":"4","fraction_name":"Plastemballasje","frequency":6,"frequency_human":"hver 6. uke","dates":["2026-02-24T00:00:00"]},"5":{"fraction_id":"5","fraction_name":"Glass- og metallemballasje","frequency":12,"frequency_human":"hver 12. uke","dates":["2026-02-24T00:00:00"]},"1222":{"fraction_id":"1222","fraction_name":"Papp\/papir","frequency":4,"frequency_human":"hver 4. uke","dates":["2026-02-24T00:00:00"]},"9992":{"fraction_id":"9992","fraction_name":"Restavfall mini","frequency":8,"frequency_human":null,"dates":["2026-03-10T00:00:00"]}}' |
+    cargo run -q -- file --address "Svingen 2" /dev/stdin |
+    dos2unix |
+    sed -e 's/^DTSTAMP:.*$/DTSTAMP:20230526T233349Z/' \
+        -e 's/^SEQUENCE:.*$/SEQUENCE:21977128800/'
+
+cat <<'EOF'
+```
+EOF
