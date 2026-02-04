@@ -1,0 +1,59 @@
+[workspace]
+members = ["cli","garbage", "postgang"]
+resolver = "3"
+
+[workspace.dependencies]
+ureq = { version = "3.1", default-features = false, features = [
+  "rustls",
+  "json",
+] }
+chrono = { version = "0.4", default-features = false, features = [
+  "serde",
+  "clock",
+] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0" }
+clap = { version = "4.5", features = ["derive", "env", "cargo"] }
+git-version = "0.3"
+uuid = { version = "1.20.0", features = ["v5"] }
+tracing = "0.1.44"
+tracing-appender = "0.2.4"
+tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
+tracing-log = "0.2.0"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+unknown_lints = "forbid"
+elided_lifetimes_in_paths = "forbid"
+unused_imports = "deny"
+warnings = "deny"
+unused = { level = "deny", priority = -1 }
+nonstandard-style = "deny"
+future-incompatible = "deny"
+rust-2024-compatibility = "deny"
+
+[workspace.lints.clippy]
+nursery = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+correctness = { level = "deny", priority = -1 }
+std_instead_of_core = "deny"
+alloc_instead_of_core = "deny"
+missing_panics_doc = "allow"
+module_name_repetitions = "allow"
+missing_const_for_fn = "deny"
+option_if_let_else = "deny"
+use_self = "deny"
+redundant_clone = "deny"
+unwrap_used = "deny"
+disallowed-methods = "deny"
+std_instead_of_alloc = "deny"
+complexity = "deny"
+or_fun_call = "deny"
+
+[profile.release]
+opt-level = 'z'   # Optimize for size
+strip = true      # Automatically strip symbols from the binary.
+lto = true
+codegen-units = 1
+panic = "abort"
+

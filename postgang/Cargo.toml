@@ -1,0 +1,47 @@
+[package]
+name = "postgang"
+license = "MIT OR Apache-2.0"
+description = "Create iCalendar for norwegian postcode delivery days"
+categories = ["command-line-utilities"]
+authors = ["Trond Aasan"]
+repository = "https://github.com/taasan/postgang-rust/"
+version = "0.1.0"
+edition = "2024"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+reqwest = { version = "0.13", default-features = false, features = ["rustls", "json"] }
+chrono = { version = "0.4", default-features = false, features = ["serde", "clock"]}
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0" }
+clap = { version = "4.5", features = ["derive", "env", "cargo"] }
+log = "0.4"
+env_logger = "0.11"
+git-version = "0.3"
+tokio = { version = "1.49", features = ["macros"] }
+
+[profile.release]
+opt-level = 'z' # Optimize for size
+strip = true  # Automatically strip symbols from the binary.
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[lints.rust]
+warnings = "deny"
+unsafe_code = "deny"
+unused = "deny"
+nonstandard-style = "deny"
+future-incompatible = "deny"
+rust-2024-compatibility = "deny"
+
+[lints.clippy]
+std_instead_of_core = "deny"
+std_instead_of_alloc = "deny"
+alloc_instead_of_core = "deny"
+complexity = "deny"
+pedantic = "deny"
+missing_const_for_fn = "deny"
+use_self = "deny"
+or_fun_call = "deny"
