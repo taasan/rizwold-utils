@@ -1,0 +1,13 @@
+[package]
+name = "calendar"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+chrono = { workspace = true }
+ics = { workspace = true }
+uuid = { workspace = true }
+url = { workspace = true }
+
+[lints]
+workspace = true

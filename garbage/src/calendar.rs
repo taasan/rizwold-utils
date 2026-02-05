@@ -157,10 +157,12 @@ mod content_line {
                 format!("SUMMARY:{escaped_summary}").into(),
                 "TRANSP:TRANSPARENT".into(),
                 format!("UID:{uid}").into(),
-                match value.created.map(|x| x.timestamp()) {
-                    Some(sequence) => format!("SEQUENCE:{sequence}").into(),
-                    None => ContentLine::new(),
-                },
+                value
+                    .created
+                    .map(|x| x.timestamp())
+                    .map_or_else(ContentLine::new, |sequence| {
+                        format!("SEQUENCE:{sequence}").into()
+                    }),
                 "URL:https://innherredrenovasjon.no/tommeplan/".into(),
                 "BEGIN:VALARM".into(),
                 "ACTION:DISPLAY".into(),
@@ -220,7 +222,7 @@ mod content_line {
         str.to_string()
     }
 
-    fn next_boundary(content: &ContentLineToPrint) -> usize {
+    fn next_boundary(content: &ContentLineToPrint<'_>) -> usize {
         const MAX_LINE: usize = 75;
         let (content, limit) = match content {
             ContentLineToPrint::First(x) => (x, MAX_LINE),

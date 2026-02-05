@@ -51,11 +51,11 @@ impl DeliveryDays {
     #[allow(clippy::missing_panics_doc)]
     pub fn api(api_key: ApiKey, api_uid: ApiUid) -> Self {
         let mut headers = HeaderMap::with_capacity(3);
-        headers.insert("accept", HeaderValue::from_str("application/json").unwrap());
+        headers.insert("accept", HeaderValue::from_str("application/json").expect("Should never happen"));
         headers.insert(super::HEADER_UID, api_uid.0);
         headers.insert(super::HEADER_KEY, api_key.0);
         log::debug!("Constructing HTTP client with headers: {headers:?}");
-        let client = Client::builder().default_headers(headers).build().unwrap();
+        let client = Client::builder().default_headers(headers).build().expect("Should never happen");
         Self::Api(client)
     }
 

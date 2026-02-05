@@ -214,7 +214,7 @@ mod content_line {
         Subsequent(&'a str),
     }
 
-    fn next_boundary(content: &ContentLineToPrint) -> usize {
+    fn next_boundary(content: &ContentLineToPrint<'_>) -> usize {
         const MAX_LINE: usize = 75;
         let (content, limit) = match content {
             ContentLineToPrint::First(x) => (x, MAX_LINE),

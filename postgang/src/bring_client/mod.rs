@@ -89,6 +89,7 @@ impl TryFrom<&str> for ApiKey {
 }
 
 #[cfg(test)]
+#[allow(clippy::unwrap_used)]
 mod test {
     use super::ApiKey;
 
