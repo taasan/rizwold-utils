@@ -6,7 +6,7 @@ use git_version::git_version;
 
 use postgang::bring_client::mailbox_delivery_dates::{ApiResponse, DeliveryDate};
 use postgang::{
-    bring_client::{mailbox_delivery_dates::DeliveryDays, ApiKey, ApiUid, NorwegianPostalCode},
+    bring_client::{ApiKey, ApiUid, NorwegianPostalCode, mailbox_delivery_dates::DeliveryDays},
     calendar::Calendar,
     io_error_to_string,
 };

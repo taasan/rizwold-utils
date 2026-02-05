@@ -2,9 +2,9 @@
 use core::fmt;
 
 use chrono::{
-    format::{DelayedFormat, StrftimeItems},
     DateTime, Datelike, Duration, NaiveDate, Utc,
     Weekday::{Fri, Mon, Sat, Sun, Thu, Tue, Wed},
+    format::{DelayedFormat, StrftimeItems},
 };
 
 use crate::bring_client::mailbox_delivery_dates::DeliveryDate;
@@ -120,7 +120,7 @@ mod content_line {
     use crate::bring_client::mailbox_delivery_dates::DeliveryDate;
 
     use super::{
-        format_naive_date, format_timestamp, weekday, Calendar, DateTime, Datelike, Duration, Utc,
+        Calendar, DateTime, Datelike, Duration, Utc, format_naive_date, format_timestamp, weekday,
     };
 
     #[derive(Debug)]
@@ -239,7 +239,12 @@ mod content_line {
         let line = ContentLine::from(
             "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ",
         );
-        assert_eq!(format!("{line}"), String::from("123456789 123456789 123456789 123456789 123456789 123456789 123456789 12345\r\n 6789 \r\n"));
+        assert_eq!(
+            format!("{line}"),
+            String::from(
+                "123456789 123456789 123456789 123456789 123456789 123456789 123456789 12345\r\n 6789 \r\n"
+            )
+        );
     }
 
     #[test]

@@ -5,18 +5,12 @@ use std::path::PathBuf;
 extern crate alloc;
 use alloc::collections::BTreeMap;
 
-use chrono::{NaiveDate, NaiveDateTime};
+use chrono::NaiveDateTime;
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 use ureq::Agent;
 
 use crate::{io_error_to_string, ir_client::DisposalAddress};
-
-#[derive(Debug, Clone)]
-/// Represents a garbage disposal date for a specific address.
-pub struct DisposalDate {
-    pub date: NaiveDate,
-}
 
 pub type ApiResponse = BTreeMap<String, GarbageFraction>;
 
@@ -42,6 +36,12 @@ pub enum WasteFraction {
 
 impl From<GarbageFraction> for WasteFraction {
     fn from(value: GarbageFraction) -> Self {
+        Self::from_api(&value.fraction_id, &value.fraction_name)
+    }
+}
+
+impl From<&GarbageFraction> for WasteFraction {
+    fn from(value: &GarbageFraction) -> Self {
         Self::from_api(&value.fraction_id, &value.fraction_name)
     }
 }

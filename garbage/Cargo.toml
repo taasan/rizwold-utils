@@ -11,23 +11,15 @@ edition = "2024"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ureq = { version = "3.1", default-features = false, features = [
-  "rustls",
-  "json",
-] }
-chrono = { version = "0.4", default-features = false, features = [
-  "serde",
-  "clock",
-] }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = { version = "1.0" }
-clap = { version = "4.5", features = ["derive", "env", "cargo"] }
-git-version = "0.3"
-uuid = { version = "1.20.0", features = ["v5"] }
-tracing = "0.1.44"
-tracing-appender = "0.2.4"
-tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
-tracing-log = "0.2.0"
+calendar = { path = "../calendar" }
+ureq = { workspace = true }
+chrono = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+clap = { workspace = true }
+uuid = { workspace = true }
+url = { workspace = true }
+tracing = { workspace = true }
 
 [lints]
 workspace = true

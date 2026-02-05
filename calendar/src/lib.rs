@@ -22,7 +22,7 @@ pub struct Calendar {
 pub struct Event {
     pub uid: uuid::Uuid,
     pub dtstamp: DateTime<Utc>,
-    pub sequence: u64,
+    pub sequence: i64,
     pub date: NaiveDate,
     pub summary: String,
     pub url: Option<Url>,
@@ -49,6 +49,7 @@ impl fmt::Display for Calendar {
 impl<'a> From<&'a Calendar> for ics::ICalendar<'a> {
     fn from(value: &'a Calendar) -> Self {
         let mut cal = ICalendar::new("2.0", &value.prodid);
+        // cal.push(Property::new("X-WR-TIMEZONE", "Europe/Oslo"));
         cal.push(CalScale::new("GREGORIAN"));
         cal.push(Method::new("PUBLISH"));
         for e in &value.events {
