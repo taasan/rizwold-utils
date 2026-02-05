@@ -39,7 +39,6 @@ impl Middleware for AuthMiddleware {
     }
 }
 
-
 #[derive(Serialize, Deserialize, Debug)]
 /// Represents JSON structure from the API.
 pub struct ApiResponse {
@@ -80,6 +79,7 @@ impl DeliveryDays {
         Self::File(path)
     }
 
+    #[allow(clippy::missing_errors_doc)]
     pub fn get_calendar(
         &self,
         postal_code: NorwegianPostalCode,
@@ -107,6 +107,7 @@ impl DeliveryDays {
 
         Ok(cal)
     }
+
     /// Get a list of delivery dates.
     #[allow(clippy::missing_errors_doc)]
     pub fn get<T: DeserializeOwned>(
