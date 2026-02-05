@@ -6,7 +6,7 @@ or from a JSON file.
 ## Help
 
 ```
-Usage: postgang [OPTIONS] --code <CODE> <COMMAND>
+Usage: postgang <COMMAND>
 
 Commands:
   api   Get delivery dates from Bring API
@@ -14,11 +14,7 @@ Commands:
   help  Print this message or the help of the given subcommand(s)
 
 Options:
-      --code <CODE>      Postal code
-      --output <OUTPUT>  File path, print to stdout if omitted
-      --format <FORMAT>  Output format [default: ical] [possible values: ical, json]
-  -h, --help             Print help
-  -V, --version          Print version
+  -h, --help  Print help
 ```
 
 ## Api
@@ -26,9 +22,12 @@ Options:
 ```
 Get delivery dates from Bring API
 
-Usage: postgang --code <CODE> api --api-uid <API_UID> --api-key <API_KEY>
+Usage: postgang api [OPTIONS] --code <CODE> --api-uid <API_UID> --api-key <API_KEY>
 
 Options:
+      --code <CODE>        Postal code
+      --output <OUTPUT>    File path, print to stdout if omitted
+      --format <FORMAT>    Output format [default: ical] [possible values: ical, json]
       --api-uid <API_UID>  [env: POSTGANG_API_UID]
       --api-key <API_KEY>  [env: POSTGANG_API_KEY]
   -h, --help               Print help
@@ -39,13 +38,16 @@ Options:
 ```
 Get delivery dates from JSON file
 
-Usage: postgang --code <CODE> file [INPUT]
+Usage: postgang file [OPTIONS] --code <CODE> [INPUT]
 
 Arguments:
   [INPUT]  File path, read from stdin of omitted
 
 Options:
-  -h, --help  Print help
+      --code <CODE>      Postal code
+      --output <OUTPUT>  File path, print to stdout if omitted
+      --format <FORMAT>  Output format [default: ical] [possible values: ical, json]
+  -h, --help             Print help
 ```
 
 ## Example output
@@ -57,57 +59,63 @@ PRODID:-//Aasan//Aasan Postgang//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-DTEND;VALUE=DATE:20230207
+UID:6761F74E-84DC-5B46-9C68-54D48FD3F977
 DTSTAMP:20230526T233349Z
+SEQUENCE:1770330347
 DTSTART;VALUE=DATE:20230206
-SUMMARY:7530: Posten kommer mandag 6.
+DTEND;VALUE=DATE:20230207
+SUMMARY:📬 mandag 6.
 TRANSP:TRANSPARENT
-UID:postgang-7530-2023-02-06
 URL:https://www.posten.no/levering-av-post/
 END:VEVENT
 BEGIN:VEVENT
-DTEND;VALUE=DATE:20230209
+UID:2E0AC439-8BF5-5034-BBFB-E68B966E8ECE
 DTSTAMP:20230526T233349Z
+SEQUENCE:1770330347
 DTSTART;VALUE=DATE:20230208
-SUMMARY:7530: Posten kommer onsdag 8.
+DTEND;VALUE=DATE:20230209
+SUMMARY:📬 onsdag 8.
 TRANSP:TRANSPARENT
-UID:postgang-7530-2023-02-08
 URL:https://www.posten.no/levering-av-post/
 END:VEVENT
 BEGIN:VEVENT
-DTEND;VALUE=DATE:20230211
+UID:BEEDE5C2-3A05-51E4-B52E-66F31AF0E96A
 DTSTAMP:20230526T233349Z
+SEQUENCE:1770330347
 DTSTART;VALUE=DATE:20230210
-SUMMARY:7530: Posten kommer fredag 10.
+DTEND;VALUE=DATE:20230211
+SUMMARY:📬 fredag 10.
 TRANSP:TRANSPARENT
-UID:postgang-7530-2023-02-10
 URL:https://www.posten.no/levering-av-post/
 END:VEVENT
 BEGIN:VEVENT
-DTEND;VALUE=DATE:20230215
+UID:7AFC12B0-6A3B-52C6-B1CF-71A1EE12CD96
 DTSTAMP:20230526T233349Z
+SEQUENCE:1770330347
 DTSTART;VALUE=DATE:20230214
-SUMMARY:7530: Posten kommer tirsdag 14.
+DTEND;VALUE=DATE:20230215
+SUMMARY:📬 tirsdag 14.
 TRANSP:TRANSPARENT
-UID:postgang-7530-2023-02-14
 URL:https://www.posten.no/levering-av-post/
 END:VEVENT
 BEGIN:VEVENT
-DTEND;VALUE=DATE:20230217
+UID:4A723381-8F93-5DBE-BC38-84EE084A4C49
 DTSTAMP:20230526T233349Z
+SEQUENCE:1770330347
 DTSTART;VALUE=DATE:20230216
-SUMMARY:7530: Posten kommer torsdag 16.
+DTEND;VALUE=DATE:20230217
+SUMMARY:📬 torsdag 16.
 TRANSP:TRANSPARENT
-UID:postgang-7530-2023-02-16
 URL:https://www.posten.no/levering-av-post/
 END:VEVENT
 BEGIN:VEVENT
-DTEND;VALUE=DATE:20230221
+UID:3BAEBE78-C3C3-55E0-8AD0-F210A4884CAF
 DTSTAMP:20230526T233349Z
+SEQUENCE:1770330347
 DTSTART;VALUE=DATE:20230220
-SUMMARY:7530: Posten kommer mandag 20.
+DTEND;VALUE=DATE:20230221
+SUMMARY:📬 mandag 20.
 TRANSP:TRANSPARENT
-UID:postgang-7530-2023-02-20
 URL:https://www.posten.no/levering-av-post/
 END:VEVENT
 END:VCALENDAR
