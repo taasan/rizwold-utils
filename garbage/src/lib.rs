@@ -66,60 +66,57 @@ pub enum Commands {
         input: Option<PathBuf>,
     },
 }
-fn handle_cmd(endpoint: &DisposalDaysApi, args: CalendarArgs) -> Result<(), Box<dyn Error>> {
-    const NAMESPACE: Uuid = uuid::uuid!("769d988a-38ee-48b1-908c-5d58c0982349");
-    let output = match args.format {
-        OutputFormat::Ical => {
-            let response: ApiResponse = endpoint.get(&args.address)?;
-            tracing::debug!("Got: {response:?}");
-            let created = Utc::now();
-            let fractions = response.into_values().collect();
-            let url = Url::parse("https://innherredrenovasjon.no/tommeplan/")
-                .expect("Should never happen");
-            let cal: ::calendar::Calendar =
-            Calendar::new(NAMESPACE, fractions, args.address, created, url).into();
-            tracing::info!("Exported {} calendar events", cal.events.len());
-            match args.output {
-                Some(path) => {
-                    let file = std::fs::File::create(&path)
-                        .map_err(|err| io_error_to_string(&err, &path))?;
-                    cal.write(file)
-                        .map_err(|err| io_error_to_string(&err, &path))?;
-                }
-
-                None => {
-                    cal.write(std::io::stdout())?;
-                }
-            }
-            return Ok(());
-        }
-        OutputFormat::Json => {
-            let response: serde_json::Value = endpoint.get(&args.address)?;
-            tracing::debug!("Got: {response:?}");
-            serde_json::to_string(&response)?
-        }
-    };
-    match args.output {
-        Some(path) => {
-            // Try to create file before we do any network requests
-            let mut file =
-                std::fs::File::create(&path).map_err(|err| io_error_to_string(&err, &path))?;
-            write!(file, "{output}").map_err(|err| io_error_to_string(&err, &path))?;
-        }
-        None => std::io::stdout().write_fmt(format_args!("{output}"))?,
-    }
-
-    Ok(())
-}
 
 impl Commands {
-    /// # Errors
-    pub fn run(self) -> Result<(), Box<dyn Error + 'static>> {
+    #[allow(clippy::missing_panics_doc)]
+    #[allow(clippy::missing_errors_doc)]
+    pub fn run(self) -> Result<(), Box<dyn Error>> {
+        const NAMESPACE: Uuid = uuid::uuid!("769d988a-38ee-48b1-908c-5d58c0982349");
         let (endpoint, args) = match self {
             Self::Api { args } => (DisposalDaysApi::api(), args),
             Self::File { input, args } => (DisposalDaysApi::file(input), args),
         };
 
-        handle_cmd(&endpoint, args)
+        let output = match args.format {
+            OutputFormat::Ical => {
+                let response: ApiResponse = endpoint.get(&args.address)?;
+                tracing::debug!("Got: {response:?}");
+                let created = Utc::now();
+                let fractions = response.into_values().collect();
+                let url = Url::parse("https://innherredrenovasjon.no/tommeplan/")
+                    .expect("Should never happen");
+                let cal: ::calendar::Calendar =
+                    Calendar::new(NAMESPACE, fractions, args.address, created, url).into();
+                tracing::info!("Exported {} calendar events", cal.events.len());
+                match args.output {
+                    Some(path) => {
+                        let file = std::fs::File::create(&path)
+                            .map_err(|err| io_error_to_string(&err, &path))?;
+                        cal.write(file)
+                            .map_err(|err| io_error_to_string(&err, &path))?;
+                    }
+
+                    None => {
+                        cal.write(std::io::stdout())?;
+                    }
+                }
+                return Ok(());
+            }
+            OutputFormat::Json => {
+                let response: serde_json::Value = endpoint.get(&args.address)?;
+                tracing::debug!("Got: {response:?}");
+                serde_json::to_string(&response)?
+            }
+        };
+        match args.output {
+            Some(path) => {
+                // Try to create file before we do any network requests
+                let mut file =
+                    std::fs::File::create(&path).map_err(|err| io_error_to_string(&err, &path))?;
+                write!(file, "{output}").map_err(|err| io_error_to_string(&err, &path))?;
+            }
+            None => std::io::stdout().write_fmt(format_args!("{output}"))?,
+        }
+        Ok(())
     }
 }
