@@ -6,18 +6,9 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use chrono::Utc;
 use clap::{Parser as ClapParser, Subcommand, ValueEnum};
-use url::Url;
-use uuid::Uuid;
 
-use crate::{
-    calendar::Calendar,
-    ir_client::{
-        DisposalAddress,
-        schedule::{ApiResponse, DisposalDaysApi},
-    },
-};
+use crate::ir_client::{DisposalAddress, schedule::DisposalDaysApi};
 
 pub(crate) mod calendar;
 pub(crate) mod ir_client;
@@ -72,7 +63,6 @@ impl Commands {
     #[allow(clippy::missing_panics_doc)]
     #[allow(clippy::missing_errors_doc)]
     pub fn run(self) -> Result<(), Box<dyn Error>> {
-        const NAMESPACE: Uuid = uuid::uuid!("769d988a-38ee-48b1-908c-5d58c0982349");
         let (endpoint, args) = match self {
             Self::Api { args } => (DisposalDaysApi::api(), args),
             Self::File { input, args } => (DisposalDaysApi::file(input), args),
@@ -80,15 +70,7 @@ impl Commands {
 
         let output = match args.format {
             OutputFormat::Ical => {
-                let response: ApiResponse = endpoint.get(&args.address)?;
-                tracing::debug!("Got: {response:?}");
-                let created = Utc::now();
-                let fractions = response.into_values().collect();
-                let url = Url::parse("https://innherredrenovasjon.no/tommeplan/")
-                    .expect("Should never happen");
-                let cal: ::calendar::Calendar =
-                    Calendar::new(NAMESPACE, fractions, args.address, created, url).into();
-                tracing::info!("Exported {} calendar events", cal.events.len());
+                let cal = endpoint.get_calendar(args.address)?;
 
                 match args.output {
                     Some(path) => {

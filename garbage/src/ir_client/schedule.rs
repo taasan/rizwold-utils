@@ -5,11 +5,14 @@ use std::path::PathBuf;
 extern crate alloc;
 use alloc::collections::BTreeMap;
 
-use chrono::NaiveDateTime;
+use chrono::{NaiveDateTime, Utc};
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 use ureq::Agent;
+use url::Url;
+use uuid::Uuid;
 
+use crate::calendar::Calendar;
 use crate::{io_error_to_string, ir_client::DisposalAddress};
 
 pub type ApiResponse = BTreeMap<String, GarbageFraction>;
@@ -121,6 +124,24 @@ impl DisposalDaysApi {
     /// Read dates from file.
     pub const fn file(path: Option<PathBuf>) -> Self {
         Self::File(path)
+    }
+
+    pub fn get_calendar(
+        &self,
+        address: DisposalAddress,
+    ) -> Result<::calendar::Calendar, Box<dyn core::error::Error>> {
+        const NAMESPACE: Uuid = uuid::uuid!("769d988a-38ee-48b1-908c-5d58c0982349");
+        let response: ApiResponse = self.get(&address)?;
+        tracing::debug!("Got: {response:?}");
+        let created = Utc::now();
+        let fractions = response.into_values().collect();
+        let url =
+            Url::parse("https://innherredrenovasjon.no/tommeplan/").expect("Should never happen");
+        let cal: ::calendar::Calendar =
+            Calendar::new(NAMESPACE, fractions, address, created, url).into();
+        tracing::info!("Exported {} calendar events", cal.events.len());
+
+        Ok(cal)
     }
 
     /// Get a list of delivery dates.
