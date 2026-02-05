@@ -9,6 +9,7 @@ path = "src/main.rs"
 
 [dependencies]
 garbage = { path = "../garbage" }
+postgang = { path = "../postgang" }
 clap = { workspace = true }
 tracing = { workspace = true }
 tracing-appender = { workspace = true }

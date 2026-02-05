@@ -33,13 +33,18 @@ enum Commands {
         #[command(subcommand)]
         command: garbage::Commands,
     },
+    Postgang {
+        #[command(subcommand)]
+        command: postgang::Commands,
+    },
 }
 
 fn handle_cli(cli: Cli) -> Result<(), Box<dyn Error>> {
     match cli.command {
+        Commands::Main(args) => handle_cli(Cli::parse_from(args.iter().skip(1))),
         Commands::Install => todo!(),
         Commands::Garbage { command } => Ok(command.run()?),
-        Commands::Main(args) => handle_cli(Cli::parse_from(args.iter().skip(1))),
+        Commands::Postgang { command } => Ok(command.run()?),
     }
 }
 
@@ -47,14 +52,6 @@ fn try_main() -> Result<(), Box<dyn Error>> {
     let cli = Cli::parse();
     tracing::debug!("Got CLI args: {cli:?}");
     handle_cli(cli)
-    // match cli.command {
-    //     Commands::Install => todo!(),
-    //     Commands::Garbage { command } => Ok(command.run()?),
-    //     Commands::Main(args) => {
-    //         eprintln!("{args:#?}");
-    //         todo!()
-    //     },
-    // }
 }
 
 fn main() -> ExitCode {
