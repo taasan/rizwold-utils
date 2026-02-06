@@ -40,7 +40,8 @@ impl From<Calendar> for ::calendar::Calendar {
                 .map(move |date| {
                     let weekday = weekday(*date);
                     let day = date.day();
-                    let summary = format!("📬 {weekday} {day}.");
+                    let code = calendar.postal_code;
+                    let summary = format!("📬 {code}: {weekday} {day}.");
 
                     ::calendar::Event {
                         uid: generate_stable_uid(calendar.namespace, calendar.postal_code, *date),
