@@ -1,0 +1,21 @@
+[package]
+name = "calendar-db"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+calendar = { path = "../calendar" }
+anyhow = { workspace = true }
+chrono = { workspace = true }
+rusqlite = { workspace = true }
+ics = { workspace = true }
+rrule = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+clap = { workspace = true }
+uuid = { workspace = true }
+url = { workspace = true }
+tracing = { workspace = true }
+
+[lints]
+workspace = true
