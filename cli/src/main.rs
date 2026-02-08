@@ -37,6 +37,10 @@ enum Commands {
         #[command(subcommand)]
         command: postgang::Commands,
     },
+    Calendar {
+        #[command(subcommand)]
+        command: calendar_db::Commands,
+    },
 }
 
 fn handle_cli(cli: Cli) -> Result<(), Box<dyn Error>> {
@@ -48,6 +52,7 @@ fn handle_cli(cli: Cli) -> Result<(), Box<dyn Error>> {
         }
         Commands::Garbage { command } => Ok(command.run()?),
         Commands::Postgang { command } => Ok(command.run()?),
+        Commands::Calendar { command } => Ok(command.run()?),
     }
 }
 
@@ -59,8 +64,6 @@ fn try_main() -> Result<(), Box<dyn Error>> {
 
 fn main() -> ExitCode {
     let _logger_guard = init_logging();
-    tracing::info!("garbage ({VERSION}): Creating garbage disposal calendar");
-
     match try_main() {
         Ok(()) => {
             tracing::info!("Success");
@@ -78,6 +81,7 @@ fn init_logging() -> tracing_appender::non_blocking::WorkerGuard {
     use tracing_appender::rolling::{RollingFileAppender, Rotation};
     use tracing_subscriber::{EnvFilter, fmt, prelude::*};
 
+    #[allow(clippy::disallowed_methods)]
     if let Some(dir) = &env::var_os("RIZWOLD_LOG_DIR") {
         if let Err(err) = create_dir_all(dir) {
             eprintln!("Unable to initialize logging to file: {err}");

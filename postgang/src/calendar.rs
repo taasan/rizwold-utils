@@ -1,5 +1,7 @@
 //! iCalendar generator
 
+use core::num::NonZeroU8;
+
 use chrono::{
     DateTime, Datelike, NaiveDate, Utc,
     Weekday::{Fri, Mon, Sat, Sun, Thu, Tue, Wed},
@@ -50,6 +52,12 @@ impl From<Calendar> for ::calendar::Calendar {
                         date: *date,
                         summary,
                         url: Some(calendar.url.clone()),
+                        description: None,
+                        duration: NonZeroU8::MIN,
+                        rrule: None,
+                        rdates: Vec::new(),
+                        exdates: Vec::new(),
+                        recurrence_id: None,
                     }
                 })
                 .collect(),
