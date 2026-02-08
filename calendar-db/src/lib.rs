@@ -83,8 +83,9 @@ pub enum Commands {
     },
 }
 
-fn get_calendar(repo: &impl Repository, cal_id: Uuid) -> anyhow::Result<::calendar::Calendar> {
-    let mut collector = EventCollector::new();
+fn get_calendar(repo: &impl Repository, cal: Calendar) -> anyhow::Result<::calendar::Calendar> {
+    let cal_id = cal.id;
+    let mut collector = EventCollector::new(cal);
 
     repo.for_each_event(Some(cal_id), |evt| {
         let evt_id = evt.id;
@@ -131,7 +132,7 @@ fn export(
             debug!("Found calendar {cal:?}");
             match format {
                 OutputFormat::Ical => {
-                    let calendar = get_calendar(repo, cal.id)?;
+                    let calendar = get_calendar(repo, cal)?;
                     calendar.write(out)?;
                 }
                 OutputFormat::Json => {
@@ -175,6 +176,7 @@ impl Commands {
 
 #[derive(Debug)]
 struct EventCollector {
+    calendar: Calendar,
     // Vi bruker en Map for raskt oppslag på master-events
     masters: HashMap<Uuid, ::calendar::Event>,
     // En liste for unntakene (som blir egne VEVENTs)
@@ -182,8 +184,9 @@ struct EventCollector {
 }
 impl EventCollector {
     #[must_use]
-    pub fn new() -> Self {
+    pub fn new(calendar: Calendar) -> Self {
         Self {
+            calendar,
             masters: HashMap::new(),
             exceptions: Vec::new(),
         }
@@ -244,6 +247,8 @@ impl EventCollector {
         all_events.extend(self.exceptions);
         // all_events
         ::calendar::Calendar {
+            name: Some(self.calendar.name),
+            description: self.calendar.description,
             prodid: "-//Rizwold//Calendar//NO".to_string(),
             events: all_events,
         }

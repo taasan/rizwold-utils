@@ -38,6 +38,8 @@ pub struct Calendar {
 impl From<Calendar> for ::calendar::Calendar {
     fn from(calendar: Calendar) -> Self {
         Self {
+            name: Some("Søppeltømming Innherred Renovasjon".to_string()),
+            description: None,
             prodid: "-//Aasan//Aasan Innherred Renovasjon//EN".to_string(),
             events: calendar
                 .fractions

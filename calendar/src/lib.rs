@@ -7,7 +7,8 @@ use chrono::{
 };
 use ics::{
     ICalendar,
-    properties::{self, CalScale, Description, Method, RRule, Sequence, Summary, Transp},
+    components::Property,
+    properties::{self, CalScale, Description, Method, Name, RRule, Sequence, Summary, Transp},
 };
 use url::Url;
 use uuid::Uuid;
@@ -15,6 +16,8 @@ use uuid::Uuid;
 #[derive(Debug, Clone)]
 pub struct Calendar {
     pub prodid: String,
+    pub name: Option<String>,
+    pub description: Option<String>,
     pub events: Vec<Event>,
 }
 
@@ -58,6 +61,20 @@ impl<'a> From<&'a Calendar> for ics::ICalendar<'a> {
         // cal.push(Property::new("X-WR-TIMEZONE", "Europe/Oslo"));
         cal.push(CalScale::new("GREGORIAN"));
         cal.push(Method::new("PUBLISH"));
+        if let Some(name) = &value.name {
+            cal.push(Name::new(ics::escape_text(name.clone())));
+            cal.push(Property::new(
+                "X-WR-CALNAME",
+                ics::escape_text(name.clone()),
+            ));
+        }
+        if let Some(desc) = &value.description {
+            cal.push(Description::new(ics::escape_text(desc.clone())));
+            cal.push(Property::new(
+                "X-WR-CALDESC",
+                ics::escape_text(desc.clone()),
+            ));
+        }
         for e in &value.events {
             cal.add_event(e.into());
         }
@@ -133,6 +150,8 @@ mod test {
     fn test_calendar_to_string() {
         let cal = Calendar {
             prodid: "-// Cal test //".to_string(),
+            name: Some("Name".to_string()),
+            description: Some("Description".to_string()),
             events: vec![Event {
                 uid: uuid::uuid!("00000000-0000-0000-0000-000000000000"),
                 dtstamp: DateTime::from_timestamp(0, 0).unwrap(),
@@ -151,7 +170,7 @@ mod test {
         };
         assert_eq!(
             cal.to_string(),
-            "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-// Cal test //\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:00000000-0000-0000-0000-000000000000\r\nDTSTAMP:19700101T000000Z\r\nSEQUENCE:0\r\nDTSTART;VALUE=DATE:20000203\r\nDTEND;VALUE=DATE:20000204\r\nSUMMARY:Summa summarum\\, hei\\; altså A☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}\r\n ☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}\r\nTRANSP:TRANSPARENT\r\nURL:http://example.com/\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+            "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-// Cal test //\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nNAME:Name\r\nX-WR-CALNAME:Name\r\nDESCRIPTION:Description\r\nX-WR-CALDESC:Description\r\nBEGIN:VEVENT\r\nUID:00000000-0000-0000-0000-000000000000\r\nDTSTAMP:19700101T000000Z\r\nSEQUENCE:0\r\nDTSTART;VALUE=DATE:20000203\r\nDTEND;VALUE=DATE:20000204\r\nSUMMARY:Summa summarum\\, hei\\; altså A☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}\r\n ☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}☣\u{fe0f}\r\nTRANSP:TRANSPARENT\r\nURL:http://example.com/\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
         );
     }
 }

@@ -34,7 +34,11 @@ pub struct Calendar {
 
 impl From<Calendar> for ::calendar::Calendar {
     fn from(calendar: Calendar) -> Self {
+        let code = calendar.postal_code;
+
         Self {
+            name: Some(format!("Postgang for postnr. {code}")),
+            description: None,
             prodid: "-//Aasan//Aasan Postgang//EN".to_string(),
             events: calendar
                 .delivery_dates
@@ -42,7 +46,6 @@ impl From<Calendar> for ::calendar::Calendar {
                 .map(move |date| {
                     let weekday = weekday(*date);
                     let day = date.day();
-                    let code = calendar.postal_code;
                     let summary = format!("📬 {code}: {weekday} {day}.");
 
                     ::calendar::Event {
