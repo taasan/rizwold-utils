@@ -7,7 +7,7 @@ edition = "2024"
 calendar = { path = "../calendar" }
 anyhow = { workspace = true }
 chrono = { workspace = true }
-rusqlite = { workspace = true }
+rusqlite = { workspace = true, features = ["fallible_uint"] }
 ics = { workspace = true }
 rrule = { workspace = true }
 serde = { workspace = true }

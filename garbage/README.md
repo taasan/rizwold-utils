@@ -9,8 +9,8 @@ pickup days or from a JSON file.
 Usage: garbage <COMMAND>
 
 Commands:
-  api   Get delivery dates from Innherred Renovasjon
-  file  Get delivery dates from JSON file
+  api   Get disposal dates from Innherred Renovasjon
+  file  Get disposal dates from JSON file
   help  Print this message or the help of the given subcommand(s)
 
 Options:
@@ -20,7 +20,7 @@ Options:
 ## Api
 
 ```
-Get delivery dates from Innherred Renovasjon
+Get disposal dates from Innherred Renovasjon
 
 Usage: garbage api [OPTIONS] --address <ADDRESS>
 
@@ -34,7 +34,7 @@ Options:
 ## File
 
 ```
-Get delivery dates from JSON file
+Get disposal dates from JSON file
 
 Usage: garbage file [OPTIONS] --address <ADDRESS> [INPUT]
 

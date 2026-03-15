@@ -144,7 +144,7 @@ impl DisposalDaysApi {
         Ok(cal)
     }
 
-    /// Get a list of delivery dates.
+    /// Get a list of disposal dates.
     #[allow(clippy::missing_errors_doc)]
     pub fn get<T: DeserializeOwned>(
         &self,

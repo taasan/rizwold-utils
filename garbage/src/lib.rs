@@ -45,12 +45,12 @@ pub struct CalendarArgs {
 
 #[derive(Subcommand, Debug)]
 pub enum Commands {
-    /// Get delivery dates from Innherred Renovasjon
+    /// Get disposal dates from Innherred Renovasjon
     Api {
         #[clap(flatten)]
         args: CalendarArgs,
     },
-    /// Get delivery dates from JSON file
+    /// Get disposal dates from JSON file
     File {
         #[clap(flatten)]
         args: CalendarArgs,
