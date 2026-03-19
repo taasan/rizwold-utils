@@ -19,7 +19,7 @@ git-version = "0.3"
 uuid = { version = "1.20", features = ["serde", "v5", "v7"] }
 tracing = "0.1.44"
 tracing-appender = "0.2.4"
-tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 tracing-log = "0.2.0"
 ics = { version = "0.5.8", default-features = true }
 rrule = { version = "0.14.0", features = ["exrule", "serde"] }
