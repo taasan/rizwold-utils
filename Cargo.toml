@@ -22,7 +22,8 @@ tracing-appender = "0.2.4"
 tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
 tracing-log = "0.2.0"
 ics = { version = "0.5.8", default-features = true }
-rrule = { version = "0.14.0", features = ["exrule", "serde"] }
+# rrule = { version = "0.14.0", features = ["exrule", "serde"] }
+rrule = { git = "https://github.com/taasan/rust-rrule.git", features = ["exrule", "serde"] }
 url = { version = "2.5.8", default-features = false, features = ["serde"] }
 rusqlite = { version = "0.40.0", default-features = false, features = [
   "bundled",
