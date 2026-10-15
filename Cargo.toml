@@ -38,18 +38,18 @@ elided_lifetimes_in_paths = "forbid"
 unused_imports = "deny"
 warnings = "deny"
 unused = { level = "deny", priority = -1 }
-nonstandard-style = "deny"
-future-incompatible = "deny"
-rust-2024-compatibility = "deny"
+nonstandard_style = { level = "deny", priority = -1 }
+future_incompatible = { level = "deny", priority = -1 }
+rust_2024_compatibility = { level = "deny", priority = -1 }
 # unsafe_code = "warn"
 # unknown_lints = "warn"
 # elided_lifetimes_in_paths = "warn"
 # unused_imports = "warn"
 # warnings = "warn"
 # unused = { level = "warn", priority = -1 }
-# nonstandard-style = "warn"
-# future-incompatible = "warn"
-# rust-2024-compatibility = "warn"
+# nonstandard_style = "warn"
+# future_incompatible = "warn"
+# rust_2024_compatibility = "warn"
 
 [workspace.lints.clippy]
 nursery = { level = "warn", priority = -1 }
@@ -64,7 +64,7 @@ option_if_let_else = "deny"
 use_self = "deny"
 redundant_clone = "deny"
 unwrap_used = "deny"
-disallowed-methods = "deny"
+disallowed_methods = "deny"
 std_instead_of_alloc = "deny"
 complexity = { level = "deny", priority = -1 }
 or_fun_call = "deny"
@@ -80,7 +80,7 @@ or_fun_call = "deny"
 # use_self = "warn"
 # redundant_clone = "warn"
 # unwrap_used = "warn"
-# disallowed-methods = "warn"
+# disallowed_methods = "warn"
 # std_instead_of_alloc = "warn"
 # complexity = { level = "warn", priority = -1 }
 # or_fun_call = "warn"
