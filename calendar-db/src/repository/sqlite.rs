@@ -125,7 +125,7 @@ impl Repository for Sqlite3Repo {
                 })?;
             let str_val: String = row.get(1)?;
             let calendar_id = uuid::Uuid::parse_str(&str_val)
-                // .with_context(|| "Kunne ikke hente kolonne 1")
+                .with_context(|| "Kunne ikke hente kolonne 1")
                 .map_err(|e| {
                     rusqlite::Error::FromSqlConversionFailure(
                         0,
@@ -304,17 +304,3 @@ pub fn open_writable_repository<P: AsRef<Path>>(
 pub fn open_writable_in_memory_repository() -> Result<impl WritableRepository, anyhow::Error> {
     Ok(Sqlite3Repo::new(rusqlite::Connection::open_in_memory()?))
 }
-
-// #[cfg(test)]
-// mod test {
-//     use rusqlite::Connection;
-//
-//     use super::Sqlite3Repo;
-//     use crate::repository::WritableRepository;
-//
-//     fn repo() -> Sqlite3Repo {
-//         let mut repo = Sqlite3Repo::new(Connection::open_in_memory().unwrap());
-//         repo.migrate().unwrap();
-//         repo
-//     }
-// }

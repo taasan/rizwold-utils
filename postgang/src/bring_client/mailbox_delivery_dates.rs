@@ -98,11 +98,6 @@ impl DeliveryDays {
             url,
         );
         let cal: ::calendar::Calendar = cal.into();
-        // let fractions = response.into_values().collect();
-        // let url =
-        //     Url::parse("https://www.posten.no/levering-av-post/").expect("Should never happen");
-        // let cal: ::calendar::Calendar =
-        //     Calendar::new(NAMESPACE, fractions, address, created, url).into();
         tracing::info!("Exported {} calendar events", cal.events.len());
 
         Ok(cal)
